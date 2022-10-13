@@ -1,23 +1,23 @@
-## 📋 Organizr-api
+## 📋 organizr-api
 
 It auths the login with a users database in MongoDB Atlas, gets transactions from the backend API, shows them in a month or year view using Chart.js for the data visualization and Moment.js for the calendar
 
 _________________________
 
 ### 📱 Frontend
-HTML5, CSS3, SASS, React.js
+* HTML5, CSS3, SASS, React.js
 
 ### 🖥️ Backend
-Node.js, Express, Mongoose, Google Cloud Engine
+* Node.js, Express, Mongoose, Google Cloud Engine
 
 ### 💾 Database
-MongoDB Atlas
+* MongoDB Atlas
 
 ### 🧰 Tools
-Git, VS Code, Nodemon, Trello
+* Git, VS Code, Nodemon, Trello
 
 ### 📚 Libraries
-Moment.js, Chart.js
+* Moment.js, Chart.js
 
 ### 📂 Database
 ```
@@ -48,11 +48,11 @@ Moment.js, Chart.js
 ________________
 
 ### Frontend code:
-[github.com/emijerochim/organizr](http://github.com/emijerochim/organizr)
+* [github.com/emijerochim/organizr](http://github.com/emijerochim/organizr)
 
 ### Backend code:
-[github.com/emijerochim/organizr-api](http://github.com/emijerochim/organizr-api)
+* [github.com/emijerochim/organizr-api](http://github.com/emijerochim/organizr-api)
 
 ### Demo:
-[emijerochim.com/organizr](http://github.com/emijerochim/organizr-api)
+* [emijerochim.com/organizr](http://github.com/emijerochim/organizr-api)
 
