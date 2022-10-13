@@ -48,11 +48,11 @@ Moment.js, Chart.js
 ________________
 
 ### Frontend code:
-[github.com/emijerochim/organizr](github.com/emijerochim/organizr)
+[github.com/emijerochim/organizr](http://github.com/emijerochim/organizr)
 
 ### Backend code:
-[github.com/emijerochim/organizr-api](github.com/emijerochim/organizr-api])
+[github.com/emijerochim/organizr-api](http://github.com/emijerochim/organizr-api)
 
 ### Demo:
-[emijerochim.com/organizr](github.com/emijerochim/organizr-api])
+[emijerochim.com/organizr](http://github.com/emijerochim/organizr-api)
 
