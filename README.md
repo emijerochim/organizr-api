@@ -1,4 +1,4 @@
-## 📋 Organizr
+## 📋 Organizr-api
 
 It auths the login with a users database in MongoDB Atlas, gets transactions from the backend API, shows them in a month or year view using Chart.js for the data visualization and Moment.js for the calendar
 
