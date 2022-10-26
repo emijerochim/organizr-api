@@ -8,7 +8,7 @@ _________________________
 * HTML5, CSS3, SASS, React.js
 
 ### 🖥️ Backend
-* Node.js, Express, Mongoose, Google Cloud Engine
+* Node.js, Express, Mongoose
 
 ### 💾 Database
 * MongoDB Atlas
@@ -26,23 +26,19 @@ _________________________
  "email": String,
  "password": String,
 
- "transactions": [
- {
- "date": ISODate,
- "amount": Number,
- "label": String,
- "category": String,
- "repeatable": Boolean
- }
- ],
+ "transactions": [{
+  "date": ISODate,
+  "amount": Number,
+  "label": String,
+  "category": String,
+  "repeatable": Boolean
+ }],
 
- "categories": [
- {
- "name": String,
- "color": String, //hexcode
- "type": String
- }
- ]
+ "categories": [{
+  "name": String,
+  "color": String, //hexcode
+  "type": String
+ }]
 }
 ```
 ________________
