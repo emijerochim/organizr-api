@@ -2,7 +2,6 @@ require("dotenv").config();
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const express = require("express");
-const knex = require("knex");
 const mongoose = require("mongoose");
 const register = require("./controllers/register");
 const signIn = require("./controllers/signIn");
@@ -15,22 +14,41 @@ app.use(express.json());
 app.use(cors());
 
 //checking connections
-app.listen(process.env.PORT, async () => {
+app.listen(process.env.API_PORT, async (error) => {
+  if(error){
+    console.log("Error with server 🚫\n ", error, "Error with server 🚫\n ");
+  
+  };
   console.log("Server up! 👍 \n localhost:", process.env.API_PORT);
 });
 
-mongoose.connect(process.env.DB_URL, {})
+mongoose.connect(process.env.DB_URL)
   .then(() => {
     console.log("Connected to database ✔️ \n ", process.env.DB_URL);
   })
-  .catch((e) => {
-    console.log("Error connecting to database 🚫\n ", e, "Error connecting to database 🚫\n ");
+  .catch((error) => {
+    console.log("Error connecting to database 🚫\n ", error, "Error connecting to database 🚫\n ");
   });
 
 
 //endpoints
 app.get("/", (req, res) => {
   res.send("success!!!");
+});
+
+app.get("/users", (req, res) => {
+  User.find({}, (err, users) => 
+  {
+  if(err){
+    console.log(err);
+  }
+    var userMap = {};
+    users.forEach((user) => {
+      userMap[user._id] = user;
+    });
+
+    res.send(userMap);
+  })
 });
 
 app.post("/signIn", signIn.handleSignIn(bcrypt));
