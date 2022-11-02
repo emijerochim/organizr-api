@@ -5,8 +5,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const register = require("./controllers/register");
 const signIn = require("./controllers/signIn");
-const User = require("./models/User");
-const validateSignIn = require("./utils/validateSignIn");
+const users = require("./controllers/users");
+
 //middlewares
 const app = express();
 app.use(express.json());
@@ -34,31 +34,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", (req, res) => {
-  User.find({}, (err, users) => {
-    if (err) {
-      console.log(err);
-    }
-    var userMap = {};
-    users.forEach((user) => {
-      userMap[user._id] = user;
-    });
-
-    res.send(userMap);
-  });
+  users.handleUsers(req, res);
 });
 
 app.post("/register", (req, res) => {
   register.handleRegister(req, res, bcrypt);
 });
 
-app.post("/signin", async (req, res, bcrypt) => {
-  const { email, password } = req.body;
-  const isUserValid = await validateSignIn(email, password, bcrypt);
-
-  if (!isUserValid) {
-    console.log("\nUser not found or password incorrect 🚫");
-    return res.status(400).json("Sign in request is invalid");
-  }
-
-  res.json("Sign in successful");
+app.post("/signin", (req, res, bcrypt) => {
+  signIn.handleSignIn(req, res, bcrypt);
 });

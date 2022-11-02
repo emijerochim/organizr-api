@@ -1,6 +1,6 @@
 const validateSignIn = require("../utils/validateSignIn");
 
-const handleSignIn = () => async (req, res, bcrypt) => {
+const handleSignIn = async (req, res, bcrypt) => {
   const { email, password } = req.body;
   const isUserValid = await validateSignIn(email, password, bcrypt);
 
