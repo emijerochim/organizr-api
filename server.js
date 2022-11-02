@@ -5,9 +5,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const register = require("./controllers/register");
 const signIn = require("./controllers/signIn");
-const profile = require("./controllers/profile");
 const User = require("./models/User");
-
+const validateSignIn = require("./utils/validateSignIn");
 //middlewares
 const app = express();
 app.use(express.json());
@@ -20,7 +19,6 @@ app.listen(process.env.API_PORT, async (error) => {
   }
   console.log("Server up! 👍 \n localhost:", process.env.API_PORT);
 });
-
 mongoose
   .connect(process.env.DB_URL)
   .then(() => {
@@ -30,7 +28,7 @@ mongoose
     console.log("Error connecting to database 🚫\n ", error);
   });
 
-//endpoints
+//routes
 app.get("/", (req, res) => {
   res.send("success!!!");
 });
@@ -49,10 +47,18 @@ app.get("/users", (req, res) => {
   });
 });
 
-app.post("/signIn", signIn.handleSignIn(bcrypt));
 app.post("/register", (req, res) => {
   register.handleRegister(req, res, bcrypt);
 });
-app.get("/profile/:id", (req, res) => {
-  profile.handleProfileGet(req, res);
+
+app.post("/signin", async (req, res, bcrypt) => {
+  const { email, password } = req.body;
+  const isUserValid = await validateSignIn(email, password, bcrypt);
+
+  if (!isUserValid) {
+    console.log("\nUser not found or password incorrect 🚫");
+    return res.status(400).json("Sign in request is invalid");
+  }
+
+  res.json("Sign in successful");
 });
