@@ -1,7 +1,8 @@
 const User = require("../models/User");
 const validateRegistration = require("../utils/validateRegistration");
+const bcrypt = require("bcrypt");
 
-const handleRegister = async (req, res, bcrypt) => {
+const handleRegister = async (req, res) => {
   const { username, email, password } = req.body;
   const isUserValid = await validateRegistration(username, email, password);
 

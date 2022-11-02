@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Transaction = require("./Transaction");
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -10,28 +11,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: "String",
   },
-  transactions: [
-    {
-      id: {
-        type: "Number",
-      },
-      date: {
-        type: "Date",
-      },
-      amount: {
-        type: "Number",
-      },
-      label: {
-        type: "String",
-      },
-      category: {
-        type: "String",
-      },
-      repeatable: {
-        type: "Boolean",
-      },
-    },
-  ],
+  transactions: {
+    type: [Transaction.transactionSchema],
+  },
   categories: [
     {
       id: {

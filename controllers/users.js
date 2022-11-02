@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-const handleUsers = async (req, res) => {
+const getUsers = async (req, res) => {
   User.find({}, (err, users) => {
     if (err) {
       console.log(err);
@@ -14,4 +14,13 @@ const handleUsers = async (req, res) => {
   });
 };
 
-module.exports = { handleUsers };
+const getUser = async (req, res) => {
+  User.find({ username: req.params.username }, (err, user) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send(user);
+  });
+};
+
+module.exports = { getUsers, getUser };
