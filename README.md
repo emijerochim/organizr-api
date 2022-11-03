@@ -30,8 +30,7 @@ _________________________
   "date": ISODate,
   "amount": Number,
   "label": String,
-  "category": String,
-  "repeatable": Boolean
+  "category": String
  }],
 
  "categories": [{
