@@ -9,14 +9,11 @@ const transactionSchema = new mongoose.Schema({
       amount: {
         type: "Number",
       },
-      label: {
+      description: {
         type: "String",
       },
       category: {
         type: "String",
-      },
-      repeatable: {
-        type: "Boolean",
       },
     },
   ],

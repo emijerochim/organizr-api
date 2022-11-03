@@ -104,3 +104,11 @@ const deleteTransaction = async (req, res) => {
     });
   }
 };
+
+module.exports = {
+  getTransactions,
+  getTransactionsOf,
+  addTransaction,
+  updateTransaction,
+  deleteTransaction,
+};
