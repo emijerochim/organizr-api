@@ -1,8 +1,8 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const validateSignIn = require("../utils/validateSignIn");
+const validateLogin = require("../utils/validateLogin");
 
-const handleSignIn = async (req, res) => {
+const handleLogin = async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username: username });
 
@@ -10,7 +10,7 @@ const handleSignIn = async (req, res) => {
     return res.status(400).json("User not found");
   }
 
-  const isUserValid = await validateSignIn(username, password);
+  const isUserValid = await validateLogin(username, password);
 
   if (!isUserValid) {
     return res.status(400).json("Sign in request is invalid");
@@ -22,8 +22,6 @@ const handleSignIn = async (req, res) => {
       user,
     });
   });
-
-  console.log("\nUser signed in 👍");
 };
 
-module.exports = { handleSignIn };
+module.exports = { handleLogin };

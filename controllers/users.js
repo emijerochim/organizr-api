@@ -1,29 +1,13 @@
 const User = require("../models/User.js");
 
-const getUsers = async (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
-    if (err) {
-      res.sendStatus(403);
-    } else {
-      User.find({}, (err, users) => {
-        if (err) {
-          console.log(err);
-        }
-        var userMap = {};
-        users.forEach((user) => {
-          userMap[user._id] = user;
-        });
-
-        res.send(userMap);
-      });
-    }
-  });
-};
-
 const getUser = async (req, res) => {
   User.find({ username: req.params.username }, (err, user) => {
     if (err) {
       console.log(err);
+      return res.status(500).json({
+        success: false,
+        error: "Server Error",
+      });
     }
     res.send(user);
   });
@@ -68,7 +52,6 @@ const deleteUser = async (req, res) => {
 };
 
 module.exports = {
-  getUsers,
   getUser,
   addUser,
   updateUser,

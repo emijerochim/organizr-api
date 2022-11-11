@@ -1,10 +1,9 @@
 const User = require("../models/User.js");
 
-const getCategories = async (req, res, username, type) => {
+const getCategories = async (req, res) => {
   try {
-    const categories = await User.find(
-      type ? { username: username, type: type } : { username: username }
-    ).categories;
+    const users = await User.find({ username: req.params.username });
+    const categories = users[0].categories;
 
     return res.status(200).json({
       success: true,
@@ -21,7 +20,6 @@ const getCategories = async (req, res, username, type) => {
 
 const addCategory = async (req, res) => {
   try {
-    const { name, type } = req.body;
     const category = await Category.create(req.body);
     return res.status(201).json({
       success: true,

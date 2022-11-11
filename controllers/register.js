@@ -1,13 +1,13 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const validateRegistration = require("../utils/validateRegistration");
+const isRegistrationValid = require("../utils/isRegistrationValid");
 const initialUserState = require("../utils/initialUserState");
 
 const handleRegister = async (req, res) => {
   const { username, email, password } = req.body;
-  const isUserValid = await validateRegistration(username, email, password);
 
-  if (!isUserValid) {
+  const isValid = await isRegistrationValid(username, email, password);
+  if (!isValid) {
     console.log("\nUser not added 🚫");
     return res.status(400).json("Registration request is invalid");
   }
@@ -25,15 +25,15 @@ const handleRegister = async (req, res) => {
       }
     }
   );
+
   initialUserState.transactions.forEach((transaction) => {
     newUser.transactions.push(transaction);
   });
   initialUserState.categories.forEach((category) => {
     newUser.categories.push(category);
   });
-  newUser.save();
 
-  console.log("\nNew user added 👍");
+  newUser.save();
   res.json(newUser);
 };
 

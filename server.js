@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("./utils/verifyToken");
 const register = require("./controllers/register");
-const signIn = require("./controllers/signIn");
+const Login = require("./controllers/login");
 const users = require("./controllers/users");
 const transactions = require("./controllers/transactions");
 const categories = require("./controllers/categories");
@@ -31,11 +31,11 @@ mongoose
   });
 
 //ROUTES
-app.get("/", (req, res) => {
+app.get("/", verifyToken, (req, res) => {
   res.send("success!!!");
 });
-app.post("/sign-in", (req, res) => {
-  signIn.handleSignIn(req, res);
+app.post("/login", (req, res) => {
+  Login.handleLogin(req, res);
 });
 app.get("/logout", (req, res) => {
   res.json({
@@ -44,14 +44,11 @@ app.get("/logout", (req, res) => {
 });
 
 //USERS CRUD
-app.get("/users", (req, res) => {
-  users.getUsers(req, res);
-});
 app.get("/users/:username", (req, res) => {
-  users.getUser(req, res);
+  users.getUser(req, res, req.params.username);
 });
 app.post("/register", (req, res) => {
-  register.handleRegister(req, res);
+  register.handleRegister(req, res); //addUser
 });
 app.put("/users/:id", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
@@ -78,12 +75,9 @@ app.get("/transactions", verifyToken, (req, res) => {
 });
 app.get("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
-    if (err) {
-      res.sendStatus(403);
-      console.log("tx:user token : ", req.token);
-    } else {
-      transactions.getTransactions(req, res, req.params.username);
-    }
+    err
+      ? res.sendStatus(403)
+      : transactions.getTransactions(req, res, req.params.username);
   });
 });
 app.post("/transactions", verifyToken, (req, res) => {
@@ -106,6 +100,13 @@ app.delete("/transactions/:id", verifyToken, (req, res) => {
 app.get("/categories", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : categories.getCategories(req, res);
+  });
+});
+app.get("/categories/:username", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err
+      ? res.sendStatus(403)
+      : categories.getCategories(req, res, req.params.username);
   });
 });
 app.post("/categories", verifyToken, (req, res) => {

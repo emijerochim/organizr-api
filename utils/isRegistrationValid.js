@@ -14,15 +14,15 @@ const validatePassword = (password) => {
     .match(/(?=.*\d)(?=.*[a-zA-Z]).{8,}/);
 };
 
-const validateRegistration = async (username, email, password) => {
+const isRegistrationValid = async (username, email, password) => {
   const isUsernameAvailable = !(await User.findOne({ username: username }));
   const IsEmailAvailable = !(await User.findOne({ email: email }));
   const isEmailValid = validateEmail(email);
   const isPasswordValid = validatePassword(password);
-  const isUserValid =
-    isUsernameAvailable && isEmailValid && IsEmailAvailable && isPasswordValid;
 
-  return isUserValid;
+  return (
+    isUsernameAvailable && isEmailValid && IsEmailAvailable && isPasswordValid
+  );
 };
 
-module.exports = validateRegistration;
+module.exports = isRegistrationValid;

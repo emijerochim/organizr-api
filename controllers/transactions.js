@@ -1,8 +1,10 @@
 const User = require("../models/User.js");
 
-const getTransactions = async (req, res, username) => {
+const getTransactions = async (req, res) => {
   try {
-    const transactions = await User.find({ username: username });
+    const users = await User.find({ username: req.params.username });
+    const transactions = users[0].transactions;
+
     return res.status(200).json({
       success: true,
       data: transactions,
@@ -18,7 +20,6 @@ const getTransactions = async (req, res, username) => {
 
 const addTransaction = async (req, res) => {
   try {
-    const { date, amount, label, category, repeatable } = req.body;
     const transaction = await Transaction.create(req.body);
     return res.status(201).json({
       success: true,

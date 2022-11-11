@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
-const validateSignIn = async (username, password) => {
+const validateLogin = async (username, password) => {
   const user = await User.findOne({ username: username });
   const isUsernameValid = username === user.username;
   const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -16,4 +16,4 @@ const validateSignIn = async (username, password) => {
   return isUsernameValid && isPasswordValid;
 };
 
-module.exports = validateSignIn;
+module.exports = validateLogin;
