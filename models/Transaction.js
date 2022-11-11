@@ -1,19 +1,20 @@
 const mongoose = require("mongoose");
+const Category = require("./Category.js");
 
 const transactionSchema = new mongoose.Schema({
   transactions: [
     {
-      date: {
-        type: "Date",
-      },
       amount: {
         type: "Number",
+      },
+      date: {
+        type: "Date",
       },
       description: {
         type: "String",
       },
       category: {
-        type: "String",
+        type: [Category.categorySchema],
       },
     },
   ],

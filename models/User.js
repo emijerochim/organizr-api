@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Transaction = require("./Transaction");
+const Category = require("./Category");
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -14,22 +15,9 @@ const userSchema = new mongoose.Schema({
   transactions: {
     type: [Transaction.transactionSchema],
   },
-  categories: [
-    {
-      id: {
-        type: "Number",
-      },
-      name: {
-        type: "String",
-      },
-      color: {
-        type: "String",
-      },
-      type: {
-        type: "String",
-      },
-    },
-  ],
+  categories: {
+    type: [Category.transactionSchema],
+  },
 });
 
 const User = mongoose.model("User", userSchema);

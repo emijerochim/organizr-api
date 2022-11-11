@@ -1,11 +1,14 @@
 const User = require("../models/User.js");
 
-const getTransactions = async (req, res, username) => {
+const getCategories = async (req, res, username, type) => {
   try {
-    const transactions = await User.find({ username: username });
+    const categories = await User.find(
+      type ? { username: username, type: type } : { username: username }
+    ).categories;
+
     return res.status(200).json({
       success: true,
-      data: transactions,
+      data: categories,
     });
   } catch (err) {
     console.log(err);
@@ -16,13 +19,13 @@ const getTransactions = async (req, res, username) => {
   }
 };
 
-const addTransaction = async (req, res) => {
+const addCategory = async (req, res) => {
   try {
-    const { date, amount, label, category, repeatable } = req.body;
-    const transaction = await Transaction.create(req.body);
+    const { name, type } = req.body;
+    const category = await Category.create(req.body);
     return res.status(201).json({
       success: true,
-      data: transaction,
+      data: category,
     });
   } catch (err) {
     console.log(err);
@@ -41,21 +44,27 @@ const addTransaction = async (req, res) => {
   }
 };
 
-const updateTransaction = async (req, res, newTransaction) => {
+const updateCategory = async (req, res, newCategory) => {
   try {
-    const transaction = await Transaction.findById(req.params.id);
-    if (!transaction) {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
       return res.status(404).json({
         success: false,
-        error: "No transaction found",
+        error: "No category found",
       });
     }
-    await transaction.updateOne(req.body, newTransaction);
+
+    await Category.findByIdAndUpdate(req.params.id, newCategory, {
+      new: true,
+      runValidators: true,
+    });
+
     return res.status(200).json({
       success: true,
-      data: {},
+      data: newCategory,
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       error: "Server Error",
@@ -63,16 +72,16 @@ const updateTransaction = async (req, res, newTransaction) => {
   }
 };
 
-const deleteTransaction = async (req, res) => {
+const deleteCategory = async (req, res) => {
   try {
-    const transaction = await Transaction.findById(req.params.id);
-    if (!transaction) {
+    const category = await Category.findById(req.params.id);
+    if (!category) {
       return res.status(404).json({
         success: false,
-        error: "No transaction found",
+        error: "No category found",
       });
     }
-    await transaction.remove();
+    await category.remove();
     return res.status(200).json({
       success: true,
       data: {},
@@ -86,8 +95,8 @@ const deleteTransaction = async (req, res) => {
 };
 
 module.exports = {
-  getTransactions,
-  addTransaction,
-  updateTransaction,
-  deleteTransaction,
+  getCategories,
+  addCategory,
+  updateCategory,
+  deleteCategory,
 };

@@ -1,6 +1,7 @@
 const User = require("../models/User");
-const validateRegistration = require("../utils/validateRegistration");
 const bcrypt = require("bcrypt");
+const validateRegistration = require("../utils/validateRegistration");
+const initialUserState = require("../utils/initialUserState");
 
 const handleRegister = async (req, res) => {
   const { username, email, password } = req.body;
@@ -24,8 +25,14 @@ const handleRegister = async (req, res) => {
       }
     }
   );
-
+  initialUserState.transactions.forEach((transaction) => {
+    newUser.transactions.push(transaction);
+  });
+  initialUserState.categories.forEach((category) => {
+    newUser.categories.push(category);
+  });
   newUser.save();
+
   console.log("\nNew user added 👍");
   res.json(newUser);
 };

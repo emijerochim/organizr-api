@@ -3,12 +3,13 @@ const cors = require("cors");
 const express = require("express");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const verifyToken = require("./utils/verifyToken");
 const register = require("./controllers/register");
 const signIn = require("./controllers/signIn");
 const users = require("./controllers/users");
 const transactions = require("./controllers/transactions");
+const categories = require("./controllers/categories");
 
-//middlewares
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -29,29 +30,96 @@ mongoose
     console.log("\n Error connecting to database 🚫\n ", error);
   });
 
-//routes
+//ROUTES
 app.get("/", (req, res) => {
   res.send("success!!!");
 });
+app.post("/sign-in", (req, res) => {
+  signIn.handleSignIn(req, res);
+});
+app.get("/logout", (req, res) => {
+  res.json({
+    token: null,
+  });
+});
 
+//USERS CRUD
 app.get("/users", (req, res) => {
   users.getUsers(req, res);
 });
-app.get("/:username", (req, res) => {
+app.get("/users/:username", (req, res) => {
   users.getUser(req, res);
 });
-
-app.get("/transactions", (req, res) => {
-  transactions.getTransactions(req, res);
-});
-app.get("/transactions/:username", (req, res) => {
-  transactions.getTransactionsOf(req, res);
-});
-
 app.post("/register", (req, res) => {
   register.handleRegister(req, res);
 });
+app.put("/users/:id", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : users.updateUser(req, res);
+  });
+});
+app.delete("/users/:id", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : users.deleteUser(req, res);
+  });
+});
 
-app.post("/signin", (req, res) => {
-  signIn.handleSignIn(req, res);
+app.post("/verify-token", (req, res) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : res.json(authData);
+  });
+});
+
+//TRANSACTIONS CRUD
+app.get("/transactions", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : transactions.getTransactions(req, res);
+  });
+});
+app.get("/transactions/:username", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    if (err) {
+      res.sendStatus(403);
+      console.log("tx:user token : ", req.token);
+    } else {
+      transactions.getTransactions(req, res, req.params.username);
+    }
+  });
+});
+app.post("/transactions", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : transactions.addTransaction(req, res);
+  });
+});
+app.put("/transactions/:id", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : transactions.updateTransaction(req, res);
+  });
+});
+app.delete("/transactions/:id", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : transactions.deleteTransaction(req, res);
+  });
+});
+
+//CATEGORIES CRUD
+app.get("/categories", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : categories.getCategories(req, res);
+  });
+});
+app.post("/categories", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : categories.addCategory(req, res);
+  });
+});
+app.put("/categories/:id", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : categories.updateCategory(req, res);
+  });
+});
+app.delete("/categories/:id", verifyToken, (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : categories.deleteCategory(req, res);
+  });
 });

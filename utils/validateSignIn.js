@@ -6,6 +6,13 @@ const validateSignIn = async (username, password) => {
   const isUsernameValid = username === user.username;
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
+  if (!isUsernameValid) {
+    console.log("\nUsername not found 🚫");
+  }
+  if (!isPasswordValid) {
+    console.log("\nPassword incorrect 🚫");
+  }
+
   return isUsernameValid && isPasswordValid;
 };
 
