@@ -11,13 +11,13 @@ _________________________
 * Node.js, Express, Mongoose
 
 ### 💾 Database
-* MongoDB Atlas
+* MongoDB
 
 ### 🧰 Tools
 * Git, VS Code, Nodemon, Trello
 
 ### 📚 Libraries
-* Moment.js, Chart.js
+* JWT, Moment.js, Chart.js
 
 ### 📂 Database
 ```
@@ -27,10 +27,10 @@ _________________________
  "password": String,
 
  "transactions": [{
-  "date": ISODate,
   "amount": Number,
-  "label": String,
-  "category": String
+  "date": ISODate,
+  "description": String,
+  "category": [Category.categorySchema]
  }],
 
  "categories": [{
@@ -40,14 +40,17 @@ _________________________
  }]
 }
 ```
+
+### ☁️ Deploy
+* Railway
 ________________
+
+### Demo:
+* [emijerochim.com/organizr](http://emijerochim.com/organizr)
 
 ### Frontend code:
 * [github.com/emijerochim/organizr](http://github.com/emijerochim/organizr)
 
 ### Backend code:
 * [github.com/emijerochim/organizr-api](http://github.com/emijerochim/organizr-api)
-
-### Demo:
-* [emijerochim.com/organizr](http://github.com/emijerochim/organizr-api)
 
