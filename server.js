@@ -24,7 +24,7 @@ app.listen(process.env.API_PORT, async (error) => {
 mongoose
   .connect(process.env.DB_URL)
   .then(() => {
-    console.log("\n Connected to database ✔️ \n ", process.env.DB_URL);
+    console.log("\n Connected to database ✔️ \n ");
   })
   .catch((error) => {
     console.log("\n Error connecting to database 🚫\n ", error);
@@ -36,11 +36,6 @@ app.get("/", verifyToken, (req, res) => {
 });
 app.post("/login", (req, res) => {
   Login.handleLogin(req, res);
-});
-app.get("/logout", (req, res) => {
-  res.json({
-    token: null,
-  });
 });
 
 //USERS CRUD
