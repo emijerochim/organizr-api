@@ -1,4 +1,5 @@
 const User = require("../models/User.js");
+const { v4: uuidv4 } = require("uuid");
 
 const getTransactions = async (req, res) => {
   try {
@@ -18,9 +19,33 @@ const getTransactions = async (req, res) => {
   }
 };
 
-const addTransaction = async (req, res) => {
+const addTransaction = async (req, res, username) => {
   try {
-    const transaction = await Transaction.create(req.body);
+    const user = await User.findOne({ username: username });
+    const id = uuidv4();
+
+    const transaction = {
+      id: id,
+      amount: req.body.amount,
+      date: new Date(req.body.date),
+      description: req.body.description,
+    };
+
+    user.categories.filter((category) => {
+      if (category.name === req.body.category) {
+        transaction.category = category;
+      }
+    });
+    user.transactions.push(transaction);
+
+    User.updateOne({ username: username }, user, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+
+    await user.save();
+
     return res.status(201).json({
       success: true,
       data: transaction,
@@ -42,21 +67,31 @@ const addTransaction = async (req, res) => {
   }
 };
 
-const updateTransaction = async (req, res, newTransaction) => {
+const updateTransaction = async (req, res, username) => {
   try {
-    const transaction = await Transaction.findById(req.params.id);
-    if (!transaction) {
-      return res.status(404).json({
-        success: false,
-        error: "No transaction found",
-      });
-    }
-    await transaction.updateOne(req.body, newTransaction);
+    const user = await User.findOne({ username: username });
+    user.transactions.forEach((transaction) => {
+      if (transaction.id === req.body.id) {
+        transaction.amount = req.body.amount;
+        transaction.date = req.body.date;
+        transaction.description = req.body.description;
+        transaction.category = req.body.category;
+      }
+    });
+
+    User.updateOne({ username: username }, user, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+
+    await user.save();
+
     return res.status(200).json({
       success: true,
-      data: {},
     });
   } catch (err) {
+    console.log(err);
     return res.status(500).json({
       success: false,
       error: "Server Error",
@@ -64,19 +99,26 @@ const updateTransaction = async (req, res, newTransaction) => {
   }
 };
 
-const deleteTransaction = async (req, res) => {
+const deleteTransaction = async (req, res, username, id) => {
   try {
-    const transaction = await Transaction.findById(req.params.id);
-    if (!transaction) {
-      return res.status(404).json({
-        success: false,
-        error: "No transaction found",
-      });
-    }
-    await transaction.remove();
+    const user = await User.findOne({ username: username });
+    const transaction = user.transactions.filter((transaction) => {
+      if (transaction.id === id) {
+        transaction = null;
+      }
+    });
+
+    User.updateOne({ username: username }, user, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+
+    await user.save();
+
     return res.status(200).json({
       success: true,
-      data: {},
+      data: transaction,
     });
   } catch (err) {
     return res.status(500).json({

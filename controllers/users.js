@@ -1,7 +1,7 @@
 const User = require("../models/User.js");
 
-const getUser = async (req, res) => {
-  User.find({ username: req.params.username }, (err, user) => {
+const getUser = async (req, res, username) => {
+  User.find({ username: username }, (err, user) => {
     if (err) {
       console.log(err);
       return res.status(500).json({

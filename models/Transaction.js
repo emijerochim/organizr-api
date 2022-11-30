@@ -4,11 +4,14 @@ const Category = require("./Category.js");
 const transactionSchema = new mongoose.Schema({
   transactions: [
     {
-      amount: {
-        type: "Number",
+      id: {
+        type: String,
       },
       date: {
         type: "Date",
+      },
+      amount: {
+        type: "Number",
       },
       description: {
         type: "String",

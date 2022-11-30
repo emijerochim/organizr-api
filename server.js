@@ -75,14 +75,18 @@ app.get("/transactions/:username", verifyToken, (req, res) => {
       : transactions.getTransactions(req, res, req.params.username);
   });
 });
-app.post("/transactions", verifyToken, (req, res) => {
+app.post("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : transactions.addTransaction(req, res);
+    err
+      ? res.sendStatus(403)
+      : transactions.addTransaction(req, res, req.params.username);
   });
 });
-app.put("/transactions/:id", verifyToken, (req, res) => {
+app.put("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : transactions.updateTransaction(req, res);
+    err
+      ? res.sendStatus(403)
+      : transactions.updateTransaction(req, res, req.params.username);
   });
 });
 app.delete("/transactions/:id", verifyToken, (req, res) => {

@@ -1,3 +1,5 @@
+const { v4: uuidv4 } = require("uuid");
+
 const categories = [
   {
     name: "Balance Update",
@@ -53,10 +55,11 @@ const categories = [
 
 const transactions = [
   {
+    id: uuidv4(),
     amount: 0,
     date: new Date(),
     description: "Initial balance",
-    category: [categories[0]],
+    category: categories[0],
   },
 ];
 
