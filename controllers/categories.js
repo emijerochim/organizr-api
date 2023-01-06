@@ -1,8 +1,8 @@
 const User = require("../models/User.js");
 
-const getCategories = async (req, res) => {
+const getCategories = async (req, res, username = {}) => {
   try {
-    const users = await User.find({ username: req.params.username });
+    const users = await User.find({ username: username });
     const categories = users[0].categories;
 
     return res.status(200).json({
@@ -18,12 +18,23 @@ const getCategories = async (req, res) => {
   }
 };
 
-const addCategory = async (req, res) => {
+const addCategory = async (req, res, username) => {
   try {
-    const category = await Category.create(req.body);
+    const user = await User.findOne({ username: username });
+
+    const category = {
+      id: req.body.id,
+      name: req.body.name,
+      color: req.body.color,
+      type: req.body.type,
+    };
+    user.categories.push(category);
+
+    await User.updateOne({ username: username }, { $set: user });
+
     return res.status(201).json({
       success: true,
-      data: category,
+      data: user.categories,
     });
   } catch (err) {
     console.log(err);
@@ -42,24 +53,28 @@ const addCategory = async (req, res) => {
   }
 };
 
-const updateCategory = async (req, res, newCategory) => {
+const updateCategory = async (req, res, username) => {
   try {
-    const category = await Category.findById(req.params.id);
-    if (!category) {
-      return res.status(404).json({
-        success: false,
-        error: "No category found",
-      });
-    }
-
-    await Category.findByIdAndUpdate(req.params.id, newCategory, {
-      new: true,
-      runValidators: true,
+    const user = await User.findOne({ username: username });
+    user.categories.forEach((category) => {
+      if (transaction.id === req.body.id) {
+        category.name = req.body.name;
+        category.color = req.body.color;
+        category.type = req.body.type;
+      }
     });
+
+    User.updateOne({ username: username }, user, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+
+    await user.save();
 
     return res.status(200).json({
       success: true,
-      data: newCategory,
+      data: user.categories,
     });
   } catch (err) {
     console.log(err);
@@ -70,19 +85,25 @@ const updateCategory = async (req, res, newCategory) => {
   }
 };
 
-const deleteCategory = async (req, res) => {
+const deleteCategory = async (req, res, username) => {
   try {
-    const category = await Category.findById(req.params.id);
-    if (!category) {
-      return res.status(404).json({
-        success: false,
-        error: "No category found",
-      });
-    }
-    await category.remove();
+    const user = await User.findOne({ username: username });
+    user.categories.forEach((category, index) => {
+      if (category.id === req.body.id) {
+        user.categories.splice(index, 1);
+      }
+    });
+
+    User.updateOne({ username: username }, user, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+
+    await user.save();
+
     return res.status(200).json({
       success: true,
-      data: {},
     });
   } catch (err) {
     return res.status(500).json({

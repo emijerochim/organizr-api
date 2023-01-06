@@ -1,9 +1,8 @@
 const User = require("../models/User.js");
-const { v4: uuidv4 } = require("uuid");
 
-const getTransactions = async (req, res) => {
+const getTransactions = async (req, res, username) => {
   try {
-    const users = await User.find({ username: req.params.username });
+    const users = await User.find({ username: username });
     const transactions = users[0].transactions;
 
     return res.status(200).json({
@@ -22,33 +21,21 @@ const getTransactions = async (req, res) => {
 const addTransaction = async (req, res, username) => {
   try {
     const user = await User.findOne({ username: username });
-    const id = uuidv4();
 
     const transaction = {
-      id: id,
+      id: req.body.id,
       amount: req.body.amount,
       date: new Date(req.body.date),
       description: req.body.description,
+      category: req.body.category,
     };
-
-    user.categories.filter((category) => {
-      if (category.name === req.body.category) {
-        transaction.category = category;
-      }
-    });
     user.transactions.push(transaction);
 
-    User.updateOne({ username: username }, user, (err) => {
-      if (err) {
-        console.log(err);
-      }
-    });
-
-    await user.save();
+    await User.updateOne({ username: username }, { $set: user });
 
     return res.status(201).json({
       success: true,
-      data: transaction,
+      data: user.transactions,
     });
   } catch (err) {
     console.log(err);
@@ -89,6 +76,7 @@ const updateTransaction = async (req, res, username) => {
 
     return res.status(200).json({
       success: true,
+      data: user.transactions,
     });
   } catch (err) {
     console.log(err);
@@ -99,12 +87,12 @@ const updateTransaction = async (req, res, username) => {
   }
 };
 
-const deleteTransaction = async (req, res, username, id) => {
+const deleteTransaction = async (req, res, username) => {
   try {
     const user = await User.findOne({ username: username });
-    const transaction = user.transactions.filter((transaction) => {
-      if (transaction.id === id) {
-        transaction = null;
+    user.transactions.forEach((transaction, index) => {
+      if (transaction.id === req.body.id) {
+        user.transactions.splice(index, 1);
       }
     });
 
@@ -118,7 +106,6 @@ const deleteTransaction = async (req, res, username, id) => {
 
     return res.status(200).json({
       success: true,
-      data: transaction,
     });
   } catch (err) {
     return res.status(500).json({

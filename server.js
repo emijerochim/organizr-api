@@ -89,9 +89,11 @@ app.put("/transactions/:username", verifyToken, (req, res) => {
       : transactions.updateTransaction(req, res, req.params.username);
   });
 });
-app.delete("/transactions/:id", verifyToken, (req, res) => {
+app.delete("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : transactions.deleteTransaction(req, res);
+    err
+      ? res.sendStatus(403)
+      : transactions.deleteTransaction(req, res, req.params.username);
   });
 });
 
@@ -108,18 +110,24 @@ app.get("/categories/:username", verifyToken, (req, res) => {
       : categories.getCategories(req, res, req.params.username);
   });
 });
-app.post("/categories", verifyToken, (req, res) => {
+app.post("/categories/:username", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : categories.addCategory(req, res);
+    err
+      ? res.sendStatus(403)
+      : categories.addCategory(req, res, req.params.username);
   });
 });
-app.put("/categories/:id", verifyToken, (req, res) => {
+app.put("/categories/:username", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : categories.updateCategory(req, res);
+    err
+      ? res.sendStatus(403)
+      : categories.updateCategory(req, res, req.params.username);
   });
 });
-app.delete("/categories/:id", verifyToken, (req, res) => {
+app.delete("/categories/:username", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : categories.deleteCategory(req, res);
+    err
+      ? res.sendStatus(403)
+      : categories.deleteCategory(req, res, req.params.username);
   });
 });
