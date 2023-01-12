@@ -2,53 +2,63 @@ const { v4: uuidv4 } = require("uuid");
 
 const categories = [
   {
+    id: uuidv4(),
     name: "Balance Update",
-    color: "#0000FF",
+    color: "#AEC0B1",
     type: "balance",
   },
   {
+    id: uuidv4(),
     name: "Food",
-    color: "#FFC0CB",
+    color: "#FF0031",
     type: "expense",
   },
   {
+    id: uuidv4(),
     name: "Transport",
-    color: "#FFA500",
+    color: "#FF4E00",
     type: "expense",
   },
   {
+    id: uuidv4(),
     name: "Clothes",
-    color: "#FF0000",
+    color: "#FA0705",
     type: "expense",
   },
   {
+    id: uuidv4(),
     name: "Entertainment",
-    color: "#FF00FF",
+    color: "#FF00B1",
     type: "expense",
   },
   {
+    id: uuidv4(),
     name: "Bills",
-    color: "#FFD700",
+    color: "#FA8205",
     type: "expense",
   },
   {
+    id: uuidv4(),
     name: "Health",
-    color: "#FF69B4",
+    color: "#FA057D",
     type: "expense",
   },
   {
+    id: uuidv4(),
     name: "Salary",
-    color: "#00FF00",
+    color: "#16E973",
     type: "income",
   },
   {
+    id: uuidv4(),
     name: "Investments",
-    color: "#00FFFF",
+    color: "#22E916",
     type: "income",
   },
   {
+    id: uuidv4(),
     name: "Gift",
-    color: "#FFFF00",
+    color: "#00FF8F",
     type: "income",
   },
 ];

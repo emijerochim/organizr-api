@@ -7,7 +7,7 @@ const getCategories = async (req, res, username = {}) => {
 
     return res.status(200).json({
       success: true,
-      data: categories,
+      categories: categories,
     });
   } catch (err) {
     console.log(err);
@@ -34,7 +34,7 @@ const addCategory = async (req, res, username) => {
 
     return res.status(201).json({
       success: true,
-      data: user.categories,
+      categories: user.categories,
     });
   } catch (err) {
     console.log(err);
@@ -57,10 +57,22 @@ const updateCategory = async (req, res, username) => {
   try {
     const user = await User.findOne({ username: username });
     user.categories.forEach((category) => {
-      if (transaction.id === req.body.id) {
+      if (category.id === req.body.id) {
         category.name = req.body.name;
         category.color = req.body.color;
         category.type = req.body.type;
+      }
+    });
+    user.transactions.forEach((transaction) => {
+      if (transaction.category.id === req.body.id) {
+        transaction.category.name = req.body.name;
+        transaction.category.color = req.body.color;
+        transaction.category.type = req.body.type;
+        if (transaction.category.type === "income") {
+          transaction.amount = Math.abs(transaction.amount);
+        } else {
+          transaction.amount = -Math.abs(transaction.amount);
+        }
       }
     });
 
@@ -74,7 +86,8 @@ const updateCategory = async (req, res, username) => {
 
     return res.status(200).json({
       success: true,
-      data: user.categories,
+      categories: user.categories,
+      transactions: user.transactions,
     });
   } catch (err) {
     console.log(err);
@@ -104,6 +117,7 @@ const deleteCategory = async (req, res, username) => {
 
     return res.status(200).json({
       success: true,
+      categories: user.categories,
     });
   } catch (err) {
     return res.status(500).json({

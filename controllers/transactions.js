@@ -7,7 +7,7 @@ const getTransactions = async (req, res, username) => {
 
     return res.status(200).json({
       success: true,
-      data: transactions,
+      transactions: transactions,
     });
   } catch (err) {
     console.log(err);
@@ -24,7 +24,10 @@ const addTransaction = async (req, res, username) => {
 
     const transaction = {
       id: req.body.id,
-      amount: req.body.amount,
+      amount:
+        req.body.category.type === "income"
+          ? req.body.amount
+          : -req.body.amount,
       date: new Date(req.body.date),
       description: req.body.description,
       category: req.body.category,
@@ -35,7 +38,7 @@ const addTransaction = async (req, res, username) => {
 
     return res.status(201).json({
       success: true,
-      data: user.transactions,
+      transactions: user.transactions,
     });
   } catch (err) {
     console.log(err);
@@ -76,7 +79,7 @@ const updateTransaction = async (req, res, username) => {
 
     return res.status(200).json({
       success: true,
-      data: user.transactions,
+      transactions: user.transactions,
     });
   } catch (err) {
     console.log(err);
@@ -106,6 +109,7 @@ const deleteTransaction = async (req, res, username) => {
 
     return res.status(200).json({
       success: true,
+      transactions: user.transactions,
     });
   } catch (err) {
     return res.status(500).json({
