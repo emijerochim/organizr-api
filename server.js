@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("./utils/verifyToken");
 const register = require("./controllers/register");
-const Login = require("./controllers/login");
+const login = require("./controllers/login");
 const users = require("./controllers/users");
 const transactions = require("./controllers/transactions");
 const categories = require("./controllers/categories");
@@ -15,16 +15,16 @@ app.use(express.json());
 app.use(cors());
 
 //checking connections
-app.listen(process.env.API_PORT, async (error) => {
+app.listen(process.env.PORT, async (error) => {
   if (error) {
     console.log("\n Error with server 🚫\n ", error);
   }
-  console.log("\n Server up! 👍 \n localhost:", process.env.API_PORT);
+  console.log("\n Server up! 👍 \n localhost:", process.env.PORT);
 });
 mongoose
   .connect(process.env.DB_URL)
   .then(() => {
-    console.log("\n Connected to database ✔️ \n ");
+    console.log(`\n Connected to database ✔️ \n ${process.env.DB_URL}`);
   })
   .catch((error) => {
     console.log("\n Error connecting to database 🚫\n ", error);
@@ -35,7 +35,7 @@ app.get("/", verifyToken, (req, res) => {
   res.send("success!!!");
 });
 app.post("/login", (req, res) => {
-  Login.handleLogin(req, res);
+  login.handleLogin(req, res);
 });
 
 //USERS CRUD
