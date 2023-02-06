@@ -37,14 +37,6 @@ mongoose
     console.log("\n Error connecting to database 🚫\n ", error);
   });
 
-//ROUTES
-app.get("/", verifyToken, (req, res) => {
-  res.send("success!!!");
-});
-app.post("/login", (req, res) => {
-  login.handleLogin(req, res);
-});
-
 app.options("*", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -54,11 +46,26 @@ app.options("*", (req, res) => {
   res.send();
 });
 
+//ROUTES
+app.get("/", verifyToken, (req, res) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : res.json(authData);
+  });
+});
+app.post("/login", (req, res) => {
+  login.handleLogin(req, res);
+});
+
 //USERS CRUD
 app.get("/users/:username", (req, res) => {
   users.getUser(req, res, req.params.username);
 });
 app.post("/register", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
   register.handleRegister(req, res); //addUser
 });
 app.put("/users/:id", verifyToken, (req, res) => {
