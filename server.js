@@ -49,7 +49,7 @@ app.post("/login", (req, res) => {
 });
 
 app.post("/verify-token", (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : res.json(authData);
   });
 });
