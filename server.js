@@ -12,7 +12,14 @@ const categories = require("./controllers/categories");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://organizr-api-production.up.railway.app",
+    ],
+  })
+);
 
 //checking connections
 app.listen(process.env.PORT, async (error) => {
@@ -36,6 +43,15 @@ app.get("/", verifyToken, (req, res) => {
 });
 app.post("/login", (req, res) => {
   login.handleLogin(req, res);
+});
+
+app.options("*", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.send();
 });
 
 //USERS CRUD
