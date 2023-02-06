@@ -10,24 +10,6 @@ const users = require("./controllers/users");
 const transactions = require("./controllers/transactions");
 const categories = require("./controllers/categories");
 
-const app = express();
-app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://organizr-api-production.up.railway.app",
-    ],
-  })
-);
-
-//checking connections
-app.listen(process.env.PORT, async (error) => {
-  if (error) {
-    console.log("\n Error with server 🚫\n ", error);
-  }
-  console.log("\n Server up! 👍 \n localhost:", process.env.PORT);
-});
 mongoose
   .connect(process.env.DB_URL)
   .then(() => {
@@ -36,6 +18,17 @@ mongoose
   .catch((error) => {
     console.log("\n Error connecting to database 🚫\n ", error);
   });
+
+const app = express();
+app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      "https://organizr-api-production.up.railway.app",
+      "http://localhost:3000",
+    ],
+  })
+);
 
 app.options("*", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -46,7 +39,6 @@ app.options("*", (req, res) => {
   res.send();
 });
 
-//ROUTES
 app.get("/", verifyToken, (req, res) => {
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : res.json(authData);
@@ -54,6 +46,12 @@ app.get("/", verifyToken, (req, res) => {
 });
 app.post("/login", (req, res) => {
   login.handleLogin(req, res);
+});
+
+app.post("/verify-token", (req, res) => {
+  jwt.verify(req.token, "secretKey", (err, authData) => {
+    err ? res.sendStatus(403) : res.json(authData);
+  });
 });
 
 //USERS CRUD
@@ -76,12 +74,6 @@ app.put("/users/:id", verifyToken, (req, res) => {
 app.delete("/users/:id", verifyToken, (req, res) => {
   jwt.verify(req.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : users.deleteUser(req, res);
-  });
-});
-
-app.post("/verify-token", (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : res.json(authData);
   });
 });
 
@@ -153,4 +145,11 @@ app.delete("/categories/:username", verifyToken, (req, res) => {
       ? res.sendStatus(403)
       : categories.deleteCategory(req, res, req.params.username);
   });
+});
+
+app.listen(process.env.PORT, async (error) => {
+  if (error) {
+    console.log("\n Error with server 🚫\n ", error);
+  }
+  console.log("\n Server up! 👍 \n localhost:", process.env.PORT);
 });
