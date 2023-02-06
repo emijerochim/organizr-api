@@ -11,9 +11,9 @@ const transactions = require("./controllers/transactions");
 const categories = require("./controllers/categories");
 
 mongoose
-  .connect(process.env.DB_URL)
+  .connect(process.env.MONGO_URL)
   .then(() => {
-    console.log(`\n Connected to database ✔️ \n ${process.env.DB_URL}`);
+    console.log(`\n Connected to database ✔️ \n ${process.env.MONGO_URL}`);
   })
   .catch((error) => {
     console.log("\n Error connecting to database 🚫\n ", error);
