@@ -34,7 +34,10 @@ const addCategory = async (req, res, username) => {
 
     await User.updateOne({ username: username }, { $set: user });
 
-    return res.status(201).json(category);
+    return res.status(201).json({
+      success: true,
+      categories: user.categories,
+    });
   } catch (err) {
     console.log(err);
     if (err.name === "ValidationError") {
