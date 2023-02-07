@@ -67,45 +67,45 @@ app.post("/register", (req, res) => {
   register.handleRegister(req, res); //addUser
 });
 app.put("/users/:id", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : users.updateUser(req, res);
   });
 });
 app.delete("/users/:id", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : users.deleteUser(req, res);
   });
 });
 
 //TRANSACTIONS CRUD
 app.get("/transactions", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : transactions.getTransactions(req, res);
   });
 });
 app.get("/transactions/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : transactions.getTransactions(req, res, req.params.username);
   });
 });
 app.post("/transactions/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : transactions.addTransaction(req, res, req.params.username);
   });
 });
 app.put("/transactions/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : transactions.updateTransaction(req, res, req.params.username);
   });
 });
 app.delete("/transactions/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : transactions.deleteTransaction(req, res, req.params.username);
@@ -114,33 +114,33 @@ app.delete("/transactions/:username", verifyToken, (req, res) => {
 
 //CATEGORIES CRUD
 app.get("/categories", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : categories.getCategories(req, res);
   });
 });
 app.get("/categories/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : categories.getCategories(req, res, req.params.username);
   });
 });
 app.post("/categories/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : categories.addCategory(req, res, req.params.username);
   });
 });
 app.put("/categories/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : categories.updateCategory(req, res, req.params.username);
   });
 });
 app.delete("/categories/:username", verifyToken, (req, res) => {
-  jwt.verify(req.token, "secretKey", (err, authData) => {
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
       ? res.sendStatus(403)
       : categories.deleteCategory(req, res, req.params.username);
