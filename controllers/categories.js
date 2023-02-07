@@ -28,6 +28,8 @@ const addCategory = async (req, res, username) => {
       color: req.body.color,
       type: req.body.type,
     };
+    console.log("USER: ", user);
+    console.log("CATEGORY: ", category);
     user.categories.push(category);
 
     await User.updateOne({ username: username }, { $set: user });
