@@ -50,7 +50,7 @@ app.post("/login", (req, res) => {
 
 app.post("/verify-token", (req, res) => {
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
-    err ? res.sendStatus(403) : users.getUser(req, res, req.params.username);
+    err ? res.sendStatus(403) : users.getUser(req, res, authData.username);
   });
 });
 
