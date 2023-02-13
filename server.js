@@ -59,11 +59,6 @@ app.get("/users/:username", (req, res) => {
   users.getUser(req, res, req.params.username);
 });
 app.post("/register", (req, res) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
   register.handleRegister(req, res); //addUser
 });
 app.put("/users/:id", verifyToken, (req, res) => {
