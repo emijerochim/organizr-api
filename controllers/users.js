@@ -15,10 +15,10 @@ const getUser = async (req, res, username) => {
         error: "User not found",
       });
     }
-    return res.status(200).json({
-      success: true,
-      user: user,
-    });
+  });
+  return res.status(200).json({
+    success: true,
+    user: user[0],
   });
 };
 
