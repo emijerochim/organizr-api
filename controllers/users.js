@@ -9,7 +9,16 @@ const getUser = async (req, res, username) => {
         error: "Server Error",
       });
     }
-    res.send(user);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        error: "User not found",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      user: user,
+    });
   });
 };
 
