@@ -21,14 +21,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: [
-      "https://organizr-api-production.up.railway.app",
-      "http://localhost:3000",
-    ],
-  })
-);
+app.use(cors());
 
 app.options("*", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
