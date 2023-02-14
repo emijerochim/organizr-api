@@ -21,6 +21,9 @@ const getTransactions = async (req, res, username) => {
 const addTransaction = async (req, res, username) => {
   try {
     const user = await User.findOne({ username: username });
+    const category = user.categories.find(
+      (category) => category.name === req.body.category
+    );
 
     const transaction = {
       id: req.body.id,
@@ -30,7 +33,7 @@ const addTransaction = async (req, res, username) => {
           : -req.body.amount,
       date: new Date(req.body.date),
       description: req.body.description,
-      category: req.body.category,
+      category: category,
     };
     user.transactions.push(transaction);
 
