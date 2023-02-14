@@ -5,7 +5,6 @@ const initialUserState = require("../utils/initialUserState");
 
 const handleRegister = async (req, res) => {
   const { username, email, password } = req.body;
-  console.table({ username, email, password });
 
   const isValid = await isRegistrationValid(username, email, password);
   if (!isValid) {

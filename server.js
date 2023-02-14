@@ -74,7 +74,7 @@ app.get("/transactions", verifyToken, (req, res) => {
 app.get("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
-      ? res.sendStatus(403)
+      ? console.log(err)
       : transactions.getTransactions(req, res, req.params.username);
   });
 });
