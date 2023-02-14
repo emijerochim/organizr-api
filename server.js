@@ -79,7 +79,11 @@ app.get("/transactions/:username", verifyToken, (req, res) => {
   });
 });
 app.post("/transactions/:username", verifyToken, (req, res) => {
-  transactions.addTransaction(req, res, req.params.username);
+  jwt.verify(req.body.token, "secretKey", (err, authData) => {
+    err
+      ? res.sendStatus(403)
+      : transactions.addTransaction(req, res, req.params.username);
+  });
 });
 app.put("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
