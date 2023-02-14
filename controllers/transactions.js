@@ -35,7 +35,6 @@ const addTransaction = async (req, res, username) => {
       description: req.body.description,
       category: category,
     };
-    console.log(transaction);
     user.transactions.push(transaction);
 
     await User.updateOne({ username: username }, { $set: user });
