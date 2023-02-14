@@ -74,14 +74,14 @@ app.get("/transactions", verifyToken, (req, res) => {
 app.get("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
-      ? console.log(err)
+      ? res.sendStatus(403)
       : transactions.getTransactions(req, res, req.params.username);
   });
 });
 app.post("/transactions/:username", verifyToken, (req, res) => {
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err
-      ? res.sendStatus(403)
+      ? console.log(err)
       : transactions.addTransaction(req, res, req.params.username);
   });
 });
