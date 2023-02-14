@@ -27,10 +27,7 @@ const addTransaction = async (req, res, username) => {
 
     const transaction = {
       id: req.body.id,
-      amount:
-        req.body.category.type === "income"
-          ? req.body.amount
-          : -req.body.amount,
+      amount: category.type === "income" ? req.body.amount : -req.body.amount,
       date: new Date(req.body.date),
       description: req.body.description,
       category: category,
