@@ -17,7 +17,7 @@ _________________________
 * Git, VS Code, Nodemon, Trello
 
 ### 📚 Libraries
-* JWT, Moment.js, Chart.js
+* JWT, Moment.js
 
 ### 📂 Database
 ```
