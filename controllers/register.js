@@ -40,7 +40,7 @@ const handleRegister = async (req, res) => {
       .status(401)
       .json("Incorrect format for password on registration 🚫");
   }
-  if (!(await isUsernameValid(username))) {
+  if (!isUsernameValid(username)) {
     console.log("\nIncorrect format for username on registration 🚫");
     return res
       .status(404)
