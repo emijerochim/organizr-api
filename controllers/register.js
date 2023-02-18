@@ -17,6 +17,8 @@ const handleRegister = async (req, res) => {
     username.length > 3 && username.length < 20;
   };
 
+  console.log(username.length > 3 + username.length < 20);
+
   const isEmailAvailable = !(await User.findOne({ email: email }));
   const isUsernameAvailable = !(await User.findOne({ username: username }));
 
