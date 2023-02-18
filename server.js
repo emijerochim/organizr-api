@@ -38,6 +38,7 @@ app.get("/", verifyToken, (req, res) => {
   });
 });
 app.post("/login", (req, res) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
   login.handleLogin(req, res);
 });
 
@@ -49,9 +50,11 @@ app.post("/verify-token", (req, res) => {
 
 //USERS CRUD
 app.get("/users/:username", (req, res) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
   users.getUser(req, res, req.params.username);
 });
 app.post("/register", (req, res) => {
+  res.header("Access-Control-Allow-Origin", req.headers.origin);
   register.handleRegister(req, res); //addUser
 });
 app.put("/users/:id", verifyToken, (req, res) => {
