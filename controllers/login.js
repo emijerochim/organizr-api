@@ -1,6 +1,5 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
-const validateLogin = require("../utils/validateLogin");
 
 const handleLogin = async (req, res) => {
   const { username, password } = req.body;

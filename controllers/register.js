@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
-const initialUserState = require("../utils/initialUserState");
+const initialUserState = require("../initialUserState");
 
 const handleRegister = async (req, res) => {
   const { username, email, password } = req.body;
