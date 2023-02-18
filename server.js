@@ -21,11 +21,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
-app.use(
-  cors({
-    origin: ["http://localhost:5173", "http://emijerochim.github.io/organizr"],
-  })
-);
+app.use(cors());
 
 app.options("*", (req, res) => {
   res.header("Access-Control-Allow-Origin", "*");
