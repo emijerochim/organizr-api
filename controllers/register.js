@@ -12,12 +12,8 @@ const handleRegister = async (req, res) => {
   const isPasswordValid = async (password) =>
     /(?=.*\d)(?=.*[a-zA-Z]).{8,}/.test(password);
 
-  const isUsernameValid = async (username) => {
-    console.log("USER: " + username);
+  const isUsernameValid = (username) =>
     username.length > 3 && username.length < 20;
-  };
-
-  console.log(username.length > 3 + username.length < 20);
 
   const isEmailAvailable = !(await User.findOne({ email: email }));
   const isUsernameAvailable = !(await User.findOne({ username: username }));
