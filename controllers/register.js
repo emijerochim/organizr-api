@@ -19,11 +19,11 @@ const handleRegister = async (req, res) => {
   const isEmailAvailable = !(await User.findOne({ email: email }));
   const isUsernameAvailable = !(await User.findOne({ username: username }));
 
-  if (!isUsernameAvailable(username)) {
+  if (!isUsernameAvailable) {
     console.log("\nUsername not available on registration 🚫");
     return res.status(402).json("Username not available on registration 🚫");
   }
-  if (!isEmailAvailable(email)) {
+  if (!isEmailAvailable) {
     console.log("\nEmail not available on registration 🚫");
     return res.status(403).json("Email not available on registration 🚫");
   }
