@@ -13,6 +13,7 @@ const handleRegister = async (req, res) => {
     /(?=.*\d)(?=.*[a-zA-Z]).{8,}/.test(password);
 
   const isUsernameValid = async (username) => {
+    console.log("USER: " + username);
     username.length > 3 && username.length < 20;
   };
 
