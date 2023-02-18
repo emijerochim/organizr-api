@@ -5,12 +5,16 @@ const validateLogin = require("../utils/validateLogin");
 const handleLogin = async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username: username });
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!user) {
-    return res.status(400).json("User not found");
+    console.log("Username not found on login 🚫");
+    return res.status(400).json("\nUser not found on login 🚫");
   }
-
-  const isUserValid = await validateLogin(username, password);
+  if (!isPasswordValid) {
+    console.log("\nPassword incorrect on login 🚫");
+    return res.status(401).json("\nPassword incorrect on login 🚫");
+  }
 
   if (!isUserValid) {
     return res.status(400).json("Sign in request is invalid");
