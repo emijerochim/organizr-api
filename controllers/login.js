@@ -4,7 +4,10 @@ const bcrypt = require("bcrypt");
 
 const handleLogin = async (req, res) => {
   const { username, password } = req.body;
+  console.table(req.body);
   const user = await User.findOne({ username: username });
+  console.log("__________");
+  console.table(user);
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!user) {
