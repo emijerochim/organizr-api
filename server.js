@@ -33,16 +33,19 @@ app.options("*", (req, res) => {
 });
 
 app.get("/", verifyToken, (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : res.json(authData);
   });
 });
 app.post("/login", (req, res) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header("Access-Control-Allow-Origin", "*");
   login.handleLogin(req, res);
 });
 
 app.post("/verify-token", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+
   jwt.verify(req.body.token, "secretKey", (err, authData) => {
     err ? res.sendStatus(403) : res.json(authData);
   });
@@ -54,7 +57,8 @@ app.get("/users/:username", (req, res) => {
   users.getUser(req, res, req.params.username);
 });
 app.post("/register", (req, res) => {
-  res.header("Access-Control-Allow-Origin", req.headers.origin);
+  res.header("Access-Control-Allow-Origin", "*");
+
   register.handleRegister(req, res); //addUser
 });
 app.put("/users/:id", verifyToken, (req, res) => {
