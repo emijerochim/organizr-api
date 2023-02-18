@@ -11,20 +11,39 @@ const handleRegister = async (req, res) => {
     );
   const isPasswordValid = async (password) =>
     /(?=.*\d)(?=.*[a-zA-Z]).{8,}/.test(password);
+
+  const isUsernameValid = async (username) => {
+    username.length > 3 && username.length < 20;
+  };
+
   const isEmailAvailable = !(await User.findOne({ email: email }));
   const isUsernameAvailable = !(await User.findOne({ username: username }));
 
-  if (!(await isEmailValid)) {
-    return res.status(400).json({ message: "Email is not valid" });
+  if (!(await isUsernameAvailable(username))) {
+    console.log("\nUsername not available on registration 🚫");
+    return res.status(402).json("Username not available on registration 🚫");
   }
-  if (!(await isPasswordValid)) {
-    return res.status(401).json({ message: "Password is not valid" });
+  if (!(await isEmailAvailable(email))) {
+    console.log("\nEmail not available on registration 🚫");
+    return res.status(403).json("Email not available on registration 🚫");
   }
-  if (!isEmailAvailable) {
-    return res.status(402).json({ message: "Email is already taken" });
+  if (!(await isEmailValid(email))) {
+    console.log("\nIncorrect format for email on registration 🚫");
+    return res
+      .status(400)
+      .json("Incorrect format for email on registration 🚫");
   }
-  if (!isUsernameAvailable) {
-    return res.status(403).json({ message: "Username is already taken" });
+  if (!(await isPasswordValid(password))) {
+    console.log("\nIncorrect format for password on registration 🚫");
+    return res
+      .status(401)
+      .json("Incorrect format for password on registration 🚫");
+  }
+  if (!(await isUsernameValid(username))) {
+    console.log("\nIncorrect format for username on registration 🚫");
+    return res
+      .status(404)
+      .json("Incorrect format for username on registration 🚫");
   }
 
   const hash = bcrypt.hashSync(password, 10);
@@ -49,7 +68,8 @@ const handleRegister = async (req, res) => {
   });
 
   newUser.save();
-  res.json(newUser);
+  res.status(200).json(newUser);
+  console.log("\nUser added ✅");
 };
 
 module.exports = { handleRegister };
