@@ -13,8 +13,8 @@ const handleLogin = async (req, res) => {
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    console.log("\nPassword incorrect on login 🚫");
-    return res.status(401).json("\nPassword incorrect on login 🚫");
+    console.log("\nPassword incorrect 🚫");
+    return res.status(401).json("\nPassword incorrect 🚫");
   }
 
   jwt.sign({ user }, "secretKey", { expiresIn: "7d" }, (err, token) => {
