@@ -9,15 +9,27 @@ const login = require("./controllers/login");
 const users = require("./controllers/users");
 const transactions = require("./controllers/transactions");
 const categories = require("./controllers/categories");
+const retry = require("promise-retry");
 
-mongoose
-  .connect(process.env.MONGO_URL)
-  .then(() => {
+const connectToDatabase = async () => {
+  try {
+    await retry(
+      async () => {
+        await mongoose.connect(process.env.MONGO_URL);
+      },
+      {
+        retries: 3,
+        minTimeout: 1000,
+        maxTimeout: 5000,
+      }
+    );
     console.log(`\n Connected to database ✔️ \n ${process.env.MONGO_URL}`);
-  })
-  .catch((error) => {
+  } catch (error) {
     console.log("\n Error connecting to database 🚫\n ", error);
-  });
+  }
+};
+
+connectToDatabase();
 
 const app = express();
 app.use(express.json());
